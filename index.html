@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[ HAK EDİŞ & TAZMİNAT ANALİZÖRÜ ]</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="workspace">
+    <div class="title-core">[ HAK EDİŞ & TAZMİNAT ANALİZÖRÜ ]</div>
+
+    <div class="dashboard-grid">
+        <!-- SOL TARAF: HESAPLAMA VERİLERİ (MAVİ) -->
+        <div class="card control-panel">
+            <div class="card-title">Hesaplama Verileri</div>
+            
+            <div class="field-box">
+                <label>Mevcut Net Maaş (TL)</label>
+                <input type="number" id="currentSalary" placeholder="Maaş giriniz..." min="0">
+            </div>
+            
+            <div class="field-box">
+                <label>Zam Oranı (%)</label>
+                <input type="number" id="raiseRate" placeholder="Oran giriniz..." min="0">
+            </div>
+
+            <div class="field-box">
+                <label>Aylık Fazla Mesai (Saat)</label>
+                <input type="number" id="overtimeHours" placeholder="Saat giriniz..." min="0">
+            </div>
+
+            <div class="field-box">
+                <label>Mesai Katsayısı</label>
+                <select id="overtimeRate">
+                    <option value="1.5">Normal %50 Zamlı</option>
+                    <option value="2.0">Hafta Sonu %100 Zamlı</option>
+                    <option value="2.5">Kritik Dönem %150 Zamlı</option>
+                </select>
+            </div>
+
+            <div class="field-group-row">
+                <div class="field-box half">
+                    <label>Çalışılan Yıl</label>
+                    <input type="number" id="workYears" placeholder="Yıl" min="0" value="0">
+                </div>
+                <div class="field-box half">
+                    <label>Çalışılan Ay</label>
+                    <input type="number" id="workMonths" placeholder="Ay" min="0" max="11" value="0">
+                </div>
+            </div>
+
+            <button class="trigger-btn" onclick="executeCoreEngine()">Hesapla</button>
+        </div>
+
+        <!-- SAĞ TARAF: HAK EDİŞ DETAYLARI (YEŞİL) -->
+        <div class="card report-panel" id="reportPanel">
+            <div class="card-title">Hak Ediş Detayları</div>
+            
+            <div class="report-row">
+                <span>BAŞLANGIÇ BRÜT MAAŞ (TAHMİNİ):</span>
+                <span class="val" id="outGross"></span>
+            </div>
+            <div class="report-row">
+                <span>SGK İŞÇİ PRİMİ (%14):</span>
+                <span class="val" id="outSgk" style="color: #ff4a4a;"></span>
+            </div>
+            <div class="report-row">
+                <span>İŞSİZLİK SİGORTASI (%1):</span>
+                <span class="val" id="outUi" style="color: #ff4a4a;"></span>
+            </div>
+            <div class="report-row">
+                <span>BAŞLANGIÇ NET MAAŞI:</span>
+                <span class="val" id="outPure"></span>
+            </div>
+            <div class="report-row">
+                <span>NET MAAŞ ARTIŞ TUTARI:</span>
+                <span class="val" id="outRaise" style="color: var(--neon-cyan);"></span>
+            </div>
+            <div class="report-row">
+                <span>GÜNCEL ZAMLI NET MAAŞ:</span>
+                <span class="val" id="outRaisedSalary"></span>
+            </div>
+            <div class="report-row">
+                <span>SAATLİK TEMEL ÇALIŞMA ÜCRETİ:</span>
+                <span class="val" id="outHourly"></span>
+            </div>
+            <div class="report-row">
+                <span>TOPLAM FAZLA MESAİ HAK EDİŞİ:</span>
+                <span class="val" id="outOvertime"></span>
+            </div>
+            <div class="report-row">
+                <span>KIDEM TAZMİNATI (NET):</span>
+                <span class="val" id="outSeverity" style="color: #66ff99;"></span>
+            </div>
+            <div class="report-row">
+                <span>İHBAR TAZMİNATI (NET):</span>
+                <span class="val" id="outNotice" style="color: #66ff99;"></span>
+            </div>
+
+            <div class="total-box">
+                <span class="lbl">TOPLAM NET HAK EDİŞ (MAAŞ + MESAİ):</span>
+                <div class="val-total" id="outTotal"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    © 2026 [ <span>YARGI WEB TASARIM</span> ] - TÜM HAKLARI SAKLIDIR.
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
