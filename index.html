@@ -3,51 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💴 HAK EDİŞ & TAZMİNAT HESAPLAMA💴</title>
+    <title>💴 HAK EDİŞ & TAZMİNAT HESAPLAMA 💴</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="workspace">
-    <div class="title-core">💴 HAK EDİŞ & TAZMİNAT HESAPLAMA💴</div>
+    <div class="title-core">💴 HAK EDİŞ & TAZMİNAT HESAPLAMA 💴</div>
 
     <div class="dashboard-grid">
         <!-- SOL TARAF: HESAPLAMA VERİLERİ (MAVİ) -->
         <div class="card control-panel">
             <div class="card-title">Hesaplama Verileri</div>
             
-            <div class="field-box">
-                <label>Mevcut Net Maaş (TL)</label>
-                <input type="number" id="currentSalary" placeholder="Maaş giriniz..." min="0">
-            </div>
-            
-            <div class="field-box">
-                <label>Zam Oranı (%)</label>
-                <input type="number" id="raiseRate" placeholder="Oran giriniz..." min="0">
-            </div>
-
-            <div class="field-box">
-                <label>Aylık Fazla Mesai (Saat)</label>
-                <input type="number" id="overtimeHours" placeholder="Saat giriniz..." min="0">
-            </div>
-
-            <div class="field-box">
-                <label>Mesai Katsayısı</label>
-                <select id="overtimeRate">
-                    <option value="1.5">Normal %50 Zamlı</option>
-                    <option value="2.0">Hafta Sonu %100 Zamlı</option>
-                    <option value="2.5">Kritik Dönem %150 Zamlı</option>
-                </select>
-            </div>
-
+            <!-- MAAŞ VE ZAM ORANI (YAN YANA) -->
             <div class="field-group-row">
                 <div class="field-box half">
-                    <label>Çalışılan Yıl</label>
-                    <input type="number" id="workYears" placeholder="Yıl" min="0" value="0">
+                    <label>Mevcut Net Maaş (TL)</label>
+                    <input type="number" id="currentSalary" placeholder="Maaş giriniz..." min="0">
                 </div>
                 <div class="field-box half">
-                    <label>Çalışılan Ay</label>
-                    <input type="number" id="workMonths" placeholder="Ay" min="0" max="11" value="0">
+                    <label>Zam Oranı (%)</label>
+                    <input type="number" id="raiseRate" placeholder="Oran giriniz..." min="0" value="0">
+                </div>
+            </div>
+
+            <!-- FAZLA MESAİ SAATİ VE KATSAYISI (YAN YANA) -->
+            <div class="field-group-row">
+                <div class="field-box half">
+                    <label>Aylık Fazla Mesai (Saat)</label>
+                    <input type="number" id="overtimeHours" placeholder="Saat giriniz..." min="0" value="0">
+                </div>
+                <div class="field-box half">
+                    <label>Mesai Katsayısı</label>
+                    <select id="overtimeRate">
+                        <option value="1.5">Normal %50 Zamlı</option>
+                        <option value="2.0">Hafta Sonu %100 Zamlı</option>
+                        <option value="2.5">Kritik Dönem %150 Zamlı</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- İŞE GİRİŞ VE İŞTEN ÇIKIŞ TARİHLERİ (YAN YANA) -->
+            <div class="field-group-row">
+                <div class="field-box half">
+                    <label>İşe Giriş Tarihi</label>
+                    <input type="date" id="startDate">
+                </div>
+                <div class="field-box half">
+                    <label>İşten Çıkış Tarihi</label>
+                    <input type="date" id="endDate">
+                </div>
+            </div>
+
+            <!-- YILLIK İZİN VE İHBAR SEÇENEĞİ (YAN YANA BOYLAMA) -->
+            <div class="field-group-row" style="align-items: flex-end;">
+                <div class="field-box half">
+                    <label>Kullanılmayan Kalan İzin (Gün)</label>
+                    <input type="number" id="unusedLeave" placeholder="Gün sayısı..." min="0" value="0">
+                </div>
+                <div class="field-box half" style="margin-bottom: 20px;">
+                    <div class="checkbox-container" style="margin: 0; padding: 11px 16px;">
+                        <input type="checkbox" id="includeNotice">
+                        <label for="includeNotice">İhbar Dahil Edilsin</label>
+                    </div>
                 </div>
             </div>
 
@@ -58,6 +77,10 @@
         <div class="card report-panel" id="reportPanel">
             <div class="card-title">Hak Ediş Detayları</div>
             
+            <div class="report-row">
+                <span>HESAPLANAN KIDEM SÜRESİ:</span>
+                <span class="val" id="outDuration" style="color: var(--neon-cyan); font-weight: bold;">-</span>
+            </div>
             <div class="report-row">
                 <span>BAŞLANGIÇ BRÜT MAAŞ (TAHMİNİ):</span>
                 <span class="val" id="outGross"></span>
@@ -98,9 +121,13 @@
                 <span>İHBAR TAZMİNATI (NET):</span>
                 <span class="val" id="outNotice" style="color: #66ff99;"></span>
             </div>
+            <div class="report-row">
+                <span>KALAN YILLIK İZİN ÜC. (NET):</span>
+                <span class="val" id="outLeavePay" style="color: #66ff99;"></span>
+            </div>
 
             <div class="total-box">
-                <span class="lbl">TOPLAM NET HAK EDİŞ (MAAŞ + MESAİ):</span>
+                <span class="lbl">TOPLAM NET HAK EDİŞ (MAAŞ + MESAİ + TAZMİNATLAR):</span>
                 <div class="val-total" id="outTotal"></div>
             </div>
         </div>
